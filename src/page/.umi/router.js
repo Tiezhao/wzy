@@ -8,17 +8,46 @@ let Router = DefaultRouter;
 
 let routes = [
   {
+    "path": "/app",
+    "component": require('../../layout').default,
+    "routes": [
+      {
+        "path": "/app/dashboard",
+        "component": require('../dashboard').default,
+        "exact": true
+      },
+      {
+        "path": "/app/a",
+        "component": require('../A').default,
+        "exact": true
+      },
+      {
+        "path": "/app/b",
+        "component": require('../B').default,
+        "exact": true
+      },
+      {
+        "path": "/app/c",
+        "component": require('../C').default,
+        "exact": true
+      },
+      {
+        "component": () => React.createElement(require('/Users/oyo/Documents/learning/z/wzy/node_modules/_umi-build-dev@1.6.1@umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+      }
+    ]
+  },
+  {
+    "path": "/login",
+    "component": require('../Login').default,
+    "exact": true
+  },
+  {
     "path": "/helloworld",
     "component": require('../HelloWorld').default,
     "exact": true
   },
   {
-    "path": "/order",
-    "component": require('../../orderSystem/App').default,
-    "exact": true
-  },
-  {
-    "component": () => React.createElement(require('C:/Users/Administrator/order-system/node_modules/_umi-build-dev@1.6.1@umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+    "component": () => React.createElement(require('/Users/oyo/Documents/learning/z/wzy/node_modules/_umi-build-dev@1.6.1@umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
   }
 ];
 window.g_routes = routes;
