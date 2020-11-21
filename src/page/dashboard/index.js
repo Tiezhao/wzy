@@ -1,35 +1,63 @@
-import { Tabs } from 'antd';
-import TableCard from './component/TableCard';
+import { Tabs } from "antd";
+import TableCard from "./component/TableCard";
 
-import './style.less';
+import "./style.less";
 
 const { TabPane } = Tabs;
 
-export default function Dashboard() {
-  const tempArr = new Array(24);
-  tempArr.fill(0);
-  const data = tempArr.map((value, index, array) => {
-    return { name: `餐桌${index}`, status: index % 2 === 0 ? 'free' : 'using' };
-  });
-  data[0].status = 'error';
+import tableData from "./tableData";
 
-  return (
-    <div className="dashboard-wrap">
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Tab 1" key="1">
-          Tab 1
-        </TabPane>
-        <TabPane tab="Tab 2" key="2">
-          Tab 2
-        </TabPane>
-        <TabPane tab="Tab 3" key="3">
-          Tab 3
-        </TabPane>
-      </Tabs>
+const TabTitle = ({ title }) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
+      fontSize: 24,
+    }}
+  >
+    {title}
+  </div>
+);
 
-      {data.map((v) => (
-        <TableCard {...v} />
-      ))}
-    </div>
-  );
+export default class Dashboard extends React.Component {
+  state = {
+    tabKey: "all",
+  };
+
+  onChangeTab = (tabKey) => this.setState({ tabKey });
+
+  render() {
+    const data = tableData.data.list;
+
+    return (
+      <div className="dashboard-wrap">
+        <Tabs
+          defaultActiveKey="all"
+          activeKey={this.state.tabKey}
+          onChange={this.onChangeTab}
+        >
+          <TabPane
+            tab={<TabTitle title="全部" />}
+            key="all"
+            style={{ minHeight: "50vh" }}
+          >
+            {data.map((v) => (
+              <TableCard data={v} />
+            ))}
+          </TabPane>
+          <TabPane
+            tab={<TabTitle title="一楼" />}
+            key="2"
+            style={{ minHeight: "50vh" }}
+          >
+            {data.map((v) => (
+              <TableCard data={v} />
+            ))}
+          </TabPane>
+        </Tabs>
+      </div>
+    );
+  }
 }

@@ -1,21 +1,90 @@
-import './TableCard.less';
+import { Button } from "antd";
+import "./TableCard.less";
 
-const tableColor = {
-  free: 'gray',
-  using: 'blue',
-  error: 'red',
-  default: 'lightslategray',
+// 0: close, 1: on, 2: error
+const icons = {
+  stove: {
+    0: require("../../../../static/image/icon_stove_nouse.png"),
+    1: require("../../../../static/image/icon_stove.png"),
+    2: require("../../../../static/image/icon_stove_problem.png"),
+  },
+
+  fan: {
+    0: require("../../../../static/image/icon_windpower_nouse.png"),
+    1: require("../../../../static/image/icon_windpower.png"),
+    2: require("../../../../static/image/icon_windpower_problem.png"),
+  },
+  cooler: {
+    0: require("../../../../static/image/icon_cooling_nouse.png"),
+    1: require("../../../../static/image/icon_cooling.png"),
+    2: require("../../../../static/image/icon_cooling_problem.png"),
+  },
 };
 
-const getColorByStatus = (status) => tableColor[status] || tableColor.default;
+// 0: off, 1: on, 2: error
+const tableColor = {
+  0: "#cecece",
+  1: "#3fb8f8",
+  2: "#ef4748",
+};
+const getColorByStatus = (status) => tableColor[status] || tableColor[0];
 
-export default function TableCard({ name, status }) {
+const FlexVerticalCenter = ({ children }) => (
+  <div style={{ display: "flex", alignItems: "center" }}>{children}</div>
+);
+
+export default function TableCard({ data }) {
+  const { tableName, tableStatus, callingContent, status } = data;
+
   return (
     <div
       className="cpnt-table-card"
-      style={{ borderColor: getColorByStatus(status) }}
+      style={{
+        border: `solid 1px ${getColorByStatus(tableStatus)}`,
+        boxShadow: `2px 2px 10px -2px ${getColorByStatus(tableStatus)}`,
+      }}
     >
-      {name}
+      <div
+        className="t-name"
+        style={{
+          background: getColorByStatus(tableStatus),
+        }}
+      >
+        {tableName}
+      </div>
+      <div className="t-main">
+        <div className="t-content">
+          <FlexVerticalCenter>
+            <div className="t-dot" />
+            <div className="t-call">呼叫内容</div>
+          </FlexVerticalCenter>
+          <div className="t-call-list">
+            {callingContent.map(({ id, name, time }) => (
+              <div
+                key={id}
+                className="t-call-item"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span>{name}</span>
+                <span>{time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="t-status">
+          <div className="t-status-list">
+            <img className="t-status-icon" src={icons.stove[status.stove]} />
+            <img className="t-status-icon" src={icons.fan[status.fan]} />
+            <img className="t-status-icon" src={icons.cooler[status.cooler]} />
+          </div>
+          <Button type="primary" disabled={!callingContent.length}>
+            处理
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

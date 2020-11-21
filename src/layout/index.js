@@ -1,10 +1,10 @@
-import { Layout, Menu, Icon, Button } from 'antd';
+import { Layout, Menu, Icon, Button } from "antd";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import './style.less';
+import "./style.less";
 
 const NavItem = ({ path, iconType, name }) => {
   return (
@@ -19,19 +19,19 @@ const NavItem = ({ path, iconType, name }) => {
 
 const navList = [
   {
-    path: '/app/a',
-    icon: '../../static/image/icon_home.png',
-    name: '主页',
+    path: "/app/a",
+    icon: "../../static/image/icon_home.png",
+    name: "主页",
   },
   {
-    path: '/app/b',
-    icon: '../../static/image/icon_home.png',
-    name: '灶台匹配',
+    path: "/app/b",
+    icon: "../../static/image/icon_home.png",
+    name: "灶台匹配",
   },
   {
-    path: '/app/c',
-    icon: '../../static/image/icon_home.png',
-    name: '系统通知',
+    path: "/app/c",
+    icon: "../../static/image/icon_home.png",
+    name: "系统通知",
   },
 ];
 
@@ -50,14 +50,14 @@ export default class AppLayout extends React.Component {
           }}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
             {navList.map(({ path, icon, name }) => (
               <Menu.Item key={path}>
                 <Link to={path}>
                   <div className="nav-wrap">
                     <img
                       className="nav-img"
-                      src={require('../../static/image/icon_home.png')}
+                      src={require("../../static/image/icon_home.png")}
                     />
                     <span className="nav-text">{name}</span>
                   </div>
@@ -67,14 +67,11 @@ export default class AppLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <Content>
+            <div style={{ background: "#fff", minHeight: 360 }}>
               {this.props.children}
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
         </Layout>
       </Layout>
     );

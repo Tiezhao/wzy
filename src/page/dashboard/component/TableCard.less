@@ -1,6 +1,72 @@
 .cpnt-table-card {
-  width: 100px;
-  height: 80px;
-  border: solid 1px lightslategray;
-  display: inline-block;
+  width: 240px;
+  height: 200px;
+  display: inline-flex;
+  flex-direction: column;
+  border: solid 1px #cecece;
+  box-shadow: 0px 0px 4px 2px #cecece;
+  border-radius: 8px;
+  float: left;
+  margin-right: 16px;
+
+
+
+
+
+  .t-name {
+    background: #cecece;
+    color: #fff;
+    text-align: center;
+    padding: 4px 0;
+    font-size: 24px;
+  }
+
+  .t-main {
+    padding: 8px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .t-dot {
+    width: 4px;
+    height: 4px;
+    background: #3fb8f8;
+    border-radius: 8px;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .t-content {
+    flex-grow: 1;
+  }
+
+  .t-call {
+    font-size: 20px;
+  }
+
+  .t-call-list {
+    padding: 8px 8px 8px 32px;
+  }
+
+  .t-call-item {
+    color: #3fb8f8;
+    font-size: 18px;
+    padding: 2px 0;
+  }
+
+  .t-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .t-status-icon {
+    width: 20px;
+
+  }
+
+  .t-status-icon:nth-child(n+2) {
+    margin-left: 8px;
+  }
 }
