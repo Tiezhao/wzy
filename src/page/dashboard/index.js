@@ -6,6 +6,7 @@ import "./style.less";
 const { TabPane } = Tabs;
 
 import tableData from "./tableData";
+import TableFooter from "./component/TableFooter";
 
 const TabTitle = ({ title }) => (
   <div
@@ -43,17 +44,39 @@ export default class Dashboard extends React.Component {
             key="all"
             style={{ minHeight: "50vh" }}
           >
-            {data.map((v) => (
-              <TableCard data={v} />
+            <div className="table-content">
+              {data.map((item) => (
+                <TableCard data={item} />
+              ))}
+            </div>
+            <TableFooter />
+          </TabPane>
+
+          <TabPane
+            tab={<TabTitle title="一楼" />}
+            key="1"
+            style={{ minHeight: "50vh" }}
+          >
+            {data.map((item) => (
+              <TableCard data={item} />
             ))}
           </TabPane>
           <TabPane
-            tab={<TabTitle title="一楼" />}
+            tab={<TabTitle title="二楼" />}
             key="2"
             style={{ minHeight: "50vh" }}
           >
-            {data.map((v) => (
-              <TableCard data={v} />
+            {data.map((item) => (
+              <TableCard data={item} />
+            ))}
+          </TabPane>
+          <TabPane
+            tab={<TabTitle title="三楼" />}
+            key="3"
+            style={{ minHeight: "50vh" }}
+          >
+            {data.map((item) => (
+              <TableCard data={item} />
             ))}
           </TabPane>
         </Tabs>

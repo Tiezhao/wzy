@@ -1,17 +1,104 @@
 .app-layout {
-  .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
+
+  .app-sider {
+    background-color: #333333 !important;
+    flex-shrink: 0 !important;
+    flex-basis: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+
+    .app-systemLogo {
+      background-color: #f7f7f7;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    ul {
+      background-color: #333333 !important;
+
+      .ant-menu-item {
+        height: 119px;
+        font-size: 30px;
+        color: #ffffff !important;
+        // padding: 0 15px 0 44px !important;
+        display: flex;
+        align-items: center;
+        margin: 0 !important;
+        border-bottom: solid 1px rgb(75, 75, 75);
+
+        img {
+          margin-left: 15px;
+        }
+
+        .nav-text {
+          display: block;
+          float: right;
+          margin: 6px 33px 0 0;
+        }
+
+        .nav-zhuye {
+          float: right;
+          margin: 6px 33px 0 0;
+
+          .nav-zhuye-zhu {
+            margin-right: 60px;
+          }
+        }
+
+      }
+
+      .ant-menu-item-selected {
+        font-size: 36px;
+
+        img {
+          width: 50px;
+          height: 56px;
+          margin-left: 8px;
+        }
+
+
+        .nav-zhuye {
+          margin: 8px 18px 0 0;
+
+          .nav-zhuye-zhu {
+            margin-right: 72px;
+          }
+        }
+
+        .nav-text {
+          margin: 6px 16px 0 0;
+        }
+
+      }
+    }
+
+    .app-QRCode {
+      height: 246px;
+      background-color: #333333;
+
+      img {
+        width: 150px;
+        height: 150px;
+        margin: 40px 0 0 65px;
+      }
+
+      span {
+        margin: 13px 0 0 43px;
+        display: block;
+        color: #ffffff;
+        font-size: 20px;
+      }
+
+    }
+
+
   }
 
-  .nav-wrap {
-    .nav-img {
-      width: 42px;
-    }
-    .nav-text {
-      font-size: 32px;
-      color: white;
-    }
+  .app-content {
+    background-color: #ffffff;
   }
+
 }
