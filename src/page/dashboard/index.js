@@ -6,7 +6,7 @@ import "./style.less";
 const { TabPane } = Tabs;
 
 import tableData from "./tableData";
-import TableFooter from "./component/TableFooter";
+import http from "../../utils/http";
 
 const TabTitle = ({ title }) => (
   <div
@@ -14,18 +14,35 @@ const TabTitle = ({ title }) => (
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      padding: 16,
+      padding: 32,
       fontSize: 24,
     }}
   >
     {title}
   </div>
 );
+//刷新本页面时设置的不切换的功能
+// sessionStorage.setItem();
 
 export default class Dashboard extends React.Component {
   state = {
+    tableList: [],
     tabKey: "all",
   };
+
+  componentDidMount() {
+    //  const xhr = new XMLHttpRequest();
+    //   xhr.onreadystatechange = function() {
+    //     if (xhr.readyState === 4) {
+    //       console.info("======", xhr.response);
+    //     }
+    //  };
+    //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
+    //   xhr.send();
+    http.get("/api/v1/wyz/dashboard/tables.json").then((data) => {
+      this.setState({ tableList: data });
+    });
+  }
 
   onChangeTab = (tabKey) => this.setState({ tabKey });
 
@@ -49,35 +66,39 @@ export default class Dashboard extends React.Component {
                 <TableCard data={item} />
               ))}
             </div>
-            <TableFooter />
           </TabPane>
-
           <TabPane
             tab={<TabTitle title="一楼" />}
             key="1"
             style={{ minHeight: "50vh" }}
           >
-            {data.map((item) => (
-              <TableCard data={item} />
-            ))}
+            <div className="table-content">
+              {data.map((item) => (
+                <TableCard data={item} />
+              ))}
+            </div>
           </TabPane>
           <TabPane
             tab={<TabTitle title="二楼" />}
             key="2"
             style={{ minHeight: "50vh" }}
           >
-            {data.map((item) => (
-              <TableCard data={item} />
-            ))}
+            <div className="table-content">
+              {data.map((item) => (
+                <TableCard data={item} />
+              ))}
+            </div>
           </TabPane>
           <TabPane
             tab={<TabTitle title="三楼" />}
             key="3"
             style={{ minHeight: "50vh" }}
           >
-            {data.map((item) => (
-              <TableCard data={item} />
-            ))}
+            <div className="table-content">
+              {data.map((item) => (
+                <TableCard data={item} />
+              ))}
+            </div>
           </TabPane>
         </Tabs>
       </div>

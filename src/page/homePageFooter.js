@@ -1,8 +1,8 @@
 import React from "React";
 
-import "./TableFooter.less";
+import "./homePageFooter.less";
 
-export default class TableFooter extends React.Component {
+export default class HomePageFooter extends React.Component {
   state = {
     tableUse: 38,
     tableSurplus: 20,

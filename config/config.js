@@ -47,4 +47,11 @@ export default {
     //   component: '../orderSystem/App',
     // },
   ],
+  proxy: {
+    "/api": {
+      target: "http://localhost:5000",
+      changeOrigin: true,
+      // pathRewrite: { "^/api": "" },
+    },
+  },
 };

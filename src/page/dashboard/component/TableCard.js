@@ -1,6 +1,13 @@
 import { Button } from "antd";
 import "./TableCard.less";
 
+import { addID4ArrItem } from "../../../utils/addID4ArrItem.js";
+
+const arr = [{}, {}, {}];
+// arr.length 3
+// arr.log = []
+arr.forEach(addID4ArrItem);
+
 // 0: close, 1: on, 2: error
 const icons = {
   stove: {
@@ -33,8 +40,8 @@ const FlexVerticalCenter = ({ children }) => (
   <div style={{ display: "flex", alignItems: "center" }}>{children}</div>
 );
 
-export default function TableCard({ data }) {
-  const { tableName, tableStatus, callingContent, status } = data;
+export default function TableCard(props) {
+  const { tableName, tableStatus, callingContent, status } = props.data;
 
   return (
     <div
