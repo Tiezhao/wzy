@@ -1,12 +1,12 @@
 import React from "react";
 
 import "./otherFooter.less";
-import guangboPng from "../../static/image/icon_guangbo.png";
+import guangboPng from "../../../../static/image/icon_guangbo.png";
 
 export default class OtherFooter extends React.Component {
   render() {
     return (
-      <div className="footer">
+      <div className="other-footer">
         <div className="footer-alarm">
           <img src={guangboPng} />
         </div>

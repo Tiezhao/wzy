@@ -1,5 +1,4 @@
-import React from "React";
-
+import React from "react";
 import "./homePageFooter.less";
 
 export default class HomePageFooter extends React.Component {
@@ -11,7 +10,7 @@ export default class HomePageFooter extends React.Component {
   render() {
     const { tableUse, tableSurplus, tableError } = this.state;
     return (
-      <div className="footer">
+      <div className="homepagefooter">
         <div className="footer-left">
           <div className="footer-left-box">
             <div id="dining"></div>

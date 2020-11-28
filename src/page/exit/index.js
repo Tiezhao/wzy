@@ -1,8 +1,8 @@
 import React from "react";
 
-import "./exit.less";
+import "./style.less";
 
-import exitPng from "../../static/image/icon_eixt.png";
+import exitPng from "../../../static/image/icon_eixt.png";
 
 export default class Exit extends React.Component {
   render() {

@@ -5,9 +5,9 @@ const { Header, Content, Footer, Sider } = Layout;
 
 import { Link } from "react-router-dom";
 
-import Exit from "../page/exit";
-import HomePageFooter from "../page/homePageFooter";
-import OtherFooter from "../page/otherFooter";
+import Exit from "../page/exit/index";
+// import HomePageFooter from "";
+import MyFooter from "../page/myFooter/index";
 import "./style.less";
 import QRCode from "../../icons/二维码.png";
 import systemLogo from "../../static/image/无烟灶管理.png";
@@ -30,12 +30,12 @@ const navList = [
     name: "",
   },
   {
-    path: "/app/b",
+    path: "/app/stovematch",
     icon: require("../../static/image/icon_stovematch.png"),
     name: "灶台匹配",
   },
   {
-    path: "/app/c",
+    path: "/app/systemInfo",
     icon: require("../../static/image/icon_inform.png"),
     name: "系统通知",
   },
@@ -52,15 +52,10 @@ const navList = [
 ];
 
 export default class AppLayout extends React.Component {
-  state = {
-    //footer初始化时为0，当点击主业时变为1，点击其他时变为2
-    footer: 0,
-  };
   render() {
-    const { footer } = this.state;
     return (
-      <Layout className="app-layout">
-        <Sider className="app-sider">
+      <Layout>
+        <Sider>
           <div className="app-systemLogo">
             <img src={systemLogo} />
           </div>
@@ -82,9 +77,6 @@ export default class AppLayout extends React.Component {
                   ) : (
                     <span className="nav-text">{name}</span>
                   )}
-                  {/* {path === "/app/dashboard"
-                    ? this.setState({ footer: 1 })
-                    : this.setState({ footer: 2 })} */}
                 </Link>
               </Menu.Item>
             ))}
@@ -97,8 +89,8 @@ export default class AppLayout extends React.Component {
         <Layout>
           <Content className="app-content">
             <Exit />
-            <div>{this.props.children}</div>
-            <div>{footer === 1 ? <HomePageFooter /> : <OtherFooter />}</div>
+            {this.props.children}
+            <MyFooter />
           </Content>
         </Layout>
       </Layout>

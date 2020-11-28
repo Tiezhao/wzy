@@ -12,16 +12,12 @@ export default {
           component: "./dashboard",
         },
         {
-          path: "/app/a",
-          component: "./A",
+          path: "/app/stovematch",
+          component: "./stovematch",
         },
         {
-          path: "/app/b",
-          component: "./B",
-        },
-        {
-          path: "/app/c",
-          component: "./C",
+          path: "/app/systemInfo",
+          component: "./systemInfo",
         },
         {
           path: "/app/d",

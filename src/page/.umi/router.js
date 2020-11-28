@@ -17,18 +17,13 @@ let routes = [
         "exact": true
       },
       {
-        "path": "/app/a",
-        "component": require('../A').default,
+        "path": "/app/stovematch",
+        "component": require('../stovematch').default,
         "exact": true
       },
       {
-        "path": "/app/b",
-        "component": require('../B').default,
-        "exact": true
-      },
-      {
-        "path": "/app/c",
-        "component": require('../C').default,
+        "path": "/app/systemInfo",
+        "component": require('../systemInfo').default,
         "exact": true
       },
       {
