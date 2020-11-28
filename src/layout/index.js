@@ -40,7 +40,7 @@ const navList = [
     name: "系统通知",
   },
   {
-    path: "/app/d",
+    path: "/app/urgencystart",
     icon: require("../../static/image/icon_emerge.png"),
     name: "紧急启用",
   },

@@ -20,8 +20,8 @@ export default {
           component: "./systemInfo",
         },
         {
-          path: "/app/d",
-          component: "./D",
+          path: "/app/urgencystart",
+          component: "./urgencystart",
         },
         {
           path: "/app/e",
@@ -45,7 +45,7 @@ export default {
   ],
   proxy: {
     "/api": {
-      target: "http://localhost:5000",
+      target: "http://192.168.2.234:7890",
       changeOrigin: true,
       // pathRewrite: { "^/api": "" },
     },

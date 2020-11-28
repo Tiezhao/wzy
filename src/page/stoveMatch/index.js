@@ -5,27 +5,48 @@ import { Table, Tag, Space } from "antd";
 
 import stoveData from "./stoveData";
 import tableData from "../dashboard/tableData";
+import http from "../../utils/http";
 
 const columns = [
   {
+    title: "蓝牙ping码",
+    dataIndex: "blueteethPin",
+    key: "blueteethPin",
+  },
+  {
+    title: "到期时间",
+    dataIndex: "expireTime",
+    key: "expireTime",
+  },
+  {
+    title: "启用时间",
+    dataIndex: "issueTime",
+    key: "issueTime",
+  },
+  {
+    title: "订单号",
+    dataIndex: "orderNo",
+    key: "orderNo",
+  },
+  {
     title: "序号",
-    dataIndex: "index",
-    key: "index",
+    dataIndex: "sn",
+    key: "sn",
+  },
+  {
+    title: "状态",
+    dataIndex: "status",
+    key: "status",
   },
   {
     title: "灶台编号",
-    dataIndex: "stoveNum",
-    key: "stoveNum",
-  },
-  {
-    title: "蓝牙ping码",
-    dataIndex: "bluePing",
-    key: "bluePing",
+    dataIndex: "stoveNo",
+    key: "stoveNo",
   },
   {
     title: "终端编号",
-    dataIndex: "terminalIndex",
-    key: "terminalIndex",
+    dataIndex: "terminalCode",
+    key: "terminalCode",
   },
   {
     title: "终端名称",
@@ -33,43 +54,45 @@ const columns = [
     key: "terminalName",
   },
   {
-    title: "启用时间",
-    dataIndex: "StartTime",
-    key: "StartTime",
-  },
-  {
-    title: "到期时间",
-    dataIndex: "outdateTime",
-    key: "outdateTime",
-  },
-  {
     title: "剩余时间/天",
-    dataIndex: "surplusTime",
-    key: "surplusTime",
-  },
-  {
-    title: "状态",
-    dataIndex: "state",
-    key: "state",
-  },
-  {
-    title: "订单号",
-    dataIndex: "orderNum",
-    key: "orderNum",
+    dataIndex: "validDays",
+    key: "validDays",
   },
 ];
 
 export default class StoveMatch extends React.Component {
   state = {
+    stoveList: [],
     tableNum: 50,
     nowPage: 1,
     totalPages: 5,
   };
+  componentDidMount() {
+    //  const xhr = new XMLHttpRequest();
+    //   xhr.onreadystatechange = function() {
+    //     if (xhr.readyState === 4) {
+    //       console.info("======", xhr.response);
+    //     }
+    //  };
+    //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
+    //   xhr.send();
+    const arraystoveList = [];
+    http.post("/api/v1/stove/getStoveMatchList").then((dd) => {
+      // console.log(dd.data.list);
+      for (let i = 0; i < 5; i++) {
+        arraystoveList.push(dd.data.list);
+      }
+      // let j = 0;
+      console.log(arraystoveList);
+      this.setState({ stoveList: arraystoveList });
+    });
+  }
   onChange = (page) => {
     this.setState({ nowPage: page });
   };
   render() {
-    const { tableNum, nowPage, totalPages } = this.state;
+    const { stoveList, tableNum, nowPage, totalPages } = this.state;
+    // console.log(stoveList[0]);
     const data = stoveData.data.list;
     return (
       <div className="stovematch">
@@ -79,7 +102,7 @@ export default class StoveMatch extends React.Component {
           <span>台</span>
         </div>
         <div className="stovematch-content">
-          <Table columns={columns} dataSource={data}>
+          <Table columns={columns} dataSource={stoveList[0]}>
             <Pagination onChange={this.onChange} />
             {/* {console.log(current)} */}
           </Table>

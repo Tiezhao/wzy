@@ -27,8 +27,8 @@ let routes = [
         "exact": true
       },
       {
-        "path": "/app/d",
-        "component": require('../D').default,
+        "path": "/app/urgencystart",
+        "component": require('../urgencystart').default,
         "exact": true
       },
       {

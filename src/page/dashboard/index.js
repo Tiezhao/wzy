@@ -39,8 +39,9 @@ export default class Dashboard extends React.Component {
     //  };
     //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
     //   xhr.send();
-    http.get("/api/v1/wyz/dashboard/tables.json").then((data) => {
-      this.setState({ tableList: data });
+    http.get("/api/v1/dashboard/getTables").then((dd) => {
+      // console.log(dd.data);
+      this.setState({ tableList: dd.data });
     });
   }
 
@@ -48,6 +49,8 @@ export default class Dashboard extends React.Component {
 
   render() {
     const data = tableData.data.list;
+    const { tableList } = this.state;
+    // console.log(tableList);
 
     return (
       <div className="dashboard-wrap">
@@ -62,7 +65,7 @@ export default class Dashboard extends React.Component {
             style={{ minHeight: "50vh" }}
           >
             <div className="table-content">
-              {data.map((item) => (
+              {tableList.map((item) => (
                 <TableCard data={item} />
               ))}
             </div>
@@ -73,7 +76,7 @@ export default class Dashboard extends React.Component {
             style={{ minHeight: "50vh" }}
           >
             <div className="table-content">
-              {data.map((item) => (
+              {tableList.map((item) => (
                 <TableCard data={item} />
               ))}
             </div>
@@ -84,7 +87,7 @@ export default class Dashboard extends React.Component {
             style={{ minHeight: "50vh" }}
           >
             <div className="table-content">
-              {data.map((item) => (
+              {tableList.map((item) => (
                 <TableCard data={item} />
               ))}
             </div>
@@ -95,7 +98,7 @@ export default class Dashboard extends React.Component {
             style={{ minHeight: "50vh" }}
           >
             <div className="table-content">
-              {data.map((item) => (
+              {tableList.map((item) => (
                 <TableCard data={item} />
               ))}
             </div>

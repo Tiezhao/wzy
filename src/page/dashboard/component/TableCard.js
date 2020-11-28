@@ -28,12 +28,14 @@ const icons = {
   },
 };
 
-// 0: off, 1: on, 2: error
+// 0: off, 1: on, 2: error，默认为0 off
 const tableColor = {
   0: "#cecece",
   1: "#3fb8f8",
   2: "#ef4748",
 };
+// console.log(tableColor[1]);
+//通过状态获取颜色
 const getColorByStatus = (status) => tableColor[status] || tableColor[0];
 
 const FlexVerticalCenter = ({ children }) => (
@@ -41,7 +43,19 @@ const FlexVerticalCenter = ({ children }) => (
 );
 
 export default function TableCard(props) {
-  const { tableName, tableStatus, callingContent, status } = props.data;
+  // console.log(props);
+  // const { tableName, tableStatus, callingContent, status } = props.data;
+  const {
+    floorID,
+    floorName,
+    requestList,
+    tableID,
+    tableName,
+    tableStatus,
+  } = props.data;
+  // console.log(requestList);
+  //floorID: "floor-003", floorName: "1楼", tableID: 1606581427910.4238, tableName: "3F-餐桌3", tableStatus: 0,
+  //reqID: "t0010-req0010", reqContent: "加水", reqTime: 1606581663215.6875
 
   return (
     <div
@@ -66,17 +80,17 @@ export default function TableCard(props) {
             <div className="t-call">呼叫内容</div>
           </FlexVerticalCenter>
           <div className="t-call-list">
-            {callingContent.map(({ id, name, time }) => (
+            {requestList.map(({ reqID, reqContent, reqTime }) => (
               <div
-                key={id}
+                key={reqID}
                 className="t-call-item"
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
                 }}
               >
-                <span>{name}</span>
-                <span>{time}</span>
+                <span>{reqContent}</span>
+                <span>{reqTime}</span>
               </div>
             ))}
           </div>
@@ -87,7 +101,12 @@ export default function TableCard(props) {
             <img className="t-status-icon" src={icons.fan[status.fan]} />
             <img className="t-status-icon" src={icons.cooler[status.cooler]} />
           </div>
-          <Button type="primary" disabled={!callingContent.length}>
+          <Button
+            type="primary"
+            disabled={
+              getColorByStatus(tableStatus) === "#cecece" ? true : false
+            }
+          >
             处理
           </Button>
         </div>
