@@ -43,7 +43,7 @@ const FlexVerticalCenter = ({ children }) => (
 );
 
 export default function TableCard(props) {
-  // console.log(props);
+  // console.log(props.data);
   // const { tableName, tableStatus, callingContent, status } = props.data;
   const {
     floorID,

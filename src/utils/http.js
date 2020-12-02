@@ -1,4 +1,4 @@
-const promiseTimeout = (val, time = "500") =>
+const promiseTimeout = (val, time = "200") =>
   new Promise((ok, err) => {
     setTimeout(() => ok(val), time);
   });

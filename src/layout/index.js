@@ -45,7 +45,7 @@ const navList = [
     name: "紧急启用",
   },
   {
-    path: "/app/e",
+    path: "/app/infomaintain",
     icon: require("../../static/image/icon_maintenance.png"),
     name: "信息维护",
   },

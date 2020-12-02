@@ -1,5 +1,6 @@
 import { Tabs } from "antd";
 import TableCard from "./component/TableCard";
+import dayjs from "dayjs";
 
 import "./style.less";
 
@@ -26,11 +27,12 @@ const TabTitle = ({ title }) => (
 
 export default class Dashboard extends React.Component {
   state = {
-    tableList: [],
+    tableList: [], //存放数据（一楼，二楼，三楼）
     tabKey: "all",
   };
 
   componentDidMount() {
+    console.log("dayjs: ", dayjs(Date.now()).format("HH:mm"));
     //  const xhr = new XMLHttpRequest();
     //   xhr.onreadystatechange = function() {
     //     if (xhr.readyState === 4) {
@@ -40,7 +42,7 @@ export default class Dashboard extends React.Component {
     //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
     //   xhr.send();
     http.get("/api/v1/dashboard/getTables").then((dd) => {
-      // console.log(dd.data);
+      // console.log(dd);
       this.setState({ tableList: dd.data });
     });
   }
@@ -48,9 +50,9 @@ export default class Dashboard extends React.Component {
   onChangeTab = (tabKey) => this.setState({ tabKey });
 
   render() {
-    const data = tableData.data.list;
+    // const data = tableData.data.list;
     const { tableList } = this.state;
-    // console.log(tableList);
+    console.log(tableList);
 
     return (
       <div className="dashboard-wrap">

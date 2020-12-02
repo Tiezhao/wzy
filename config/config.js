@@ -24,28 +24,20 @@ export default {
           component: "./urgencystart",
         },
         {
-          path: "/app/e",
-          component: "./E",
+          path: "/app/infomaintain",
+          component: "./infomaintain",
         },
       ],
     },
-    {
-      path: "/login",
-      component: "./Login",
-    },
+
     {
       path: "/helloworld",
       component: "./HelloWorld",
     },
-
-    // {
-    //   path: '/order',
-    //   component: '../orderSystem/App',
-    // },
   ],
   proxy: {
     "/api": {
-      target: "http://192.168.2.234:7890",
+      target: "http://127.0.0.1:7890",
       changeOrigin: true,
       // pathRewrite: { "^/api": "" },
     },

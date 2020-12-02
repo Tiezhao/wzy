@@ -76,15 +76,10 @@ export default class StoveMatch extends React.Component {
     //  };
     //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
     //   xhr.send();
-    const arraystoveList = [];
+    // const arraystoveList = [];
     http.post("/api/v1/stove/getStoveMatchList").then((dd) => {
       // console.log(dd.data.list);
-      for (let i = 0; i < 5; i++) {
-        arraystoveList.push(dd.data.list);
-      }
-      // let j = 0;
-      console.log(arraystoveList);
-      this.setState({ stoveList: arraystoveList });
+      this.setState({ stoveList: dd.data.list });
     });
   }
   onChange = (page) => {
@@ -92,7 +87,6 @@ export default class StoveMatch extends React.Component {
   };
   render() {
     const { stoveList, tableNum, nowPage, totalPages } = this.state;
-    // console.log(stoveList[0]);
     const data = stoveData.data.list;
     return (
       <div className="stovematch">
@@ -102,7 +96,7 @@ export default class StoveMatch extends React.Component {
           <span>台</span>
         </div>
         <div className="stovematch-content">
-          <Table columns={columns} dataSource={stoveList[0]}>
+          <Table columns={columns} dataSource={stoveList}>
             <Pagination onChange={this.onChange} />
             {/* {console.log(current)} */}
           </Table>

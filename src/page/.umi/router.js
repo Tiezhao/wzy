@@ -32,19 +32,14 @@ let routes = [
         "exact": true
       },
       {
-        "path": "/app/e",
-        "component": require('../E').default,
+        "path": "/app/infomaintain",
+        "component": require('../infomaintain').default,
         "exact": true
       },
       {
-        "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/_umi-build-dev@1.6.1@umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+        "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
       }
     ]
-  },
-  {
-    "path": "/login",
-    "component": require('../Login').default,
-    "exact": true
   },
   {
     "path": "/helloworld",
@@ -52,7 +47,7 @@ let routes = [
     "exact": true
   },
   {
-    "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/_umi-build-dev@1.6.1@umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+    "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
   }
 ];
 window.g_routes = routes;
