@@ -1,9 +1,10 @@
-import React from "react";
-import { Form, Input, Button, Modal } from "antd";
+import React from 'react';
+import { Form, Input, Button, Modal, message } from 'antd';
 
-import "./style.less";
-import successPng from "../../../static/image/icon_success.png";
-import titlebarPng from "../../../static/image/sub_tittlebar.png";
+import './style.less';
+import successPng from '../../../static/image/icon_success.png';
+import titlebarPng from '../../../static/image/sub_tittlebar.png';
+import http from '../../utils/http';
 
 const layout = {
   labelCol: { span: 2 },
@@ -24,7 +25,30 @@ const onFinishFailed = (errorInfo) => {
 export default class UrgencyStart extends React.Component {
   state = {
     modalVisible: false,
+    countDown: 0,
+    codeLoading: false,
+    submitLoading: false,
+    authCodeHelpMsg: '', // 请输入正确的授权码！
+    smsCodeHelpMsg: '', // 验证码错误
+
+    authCode: '',
+    applicant: '',
+    phoneNo: '',
+    verificationCode: '',
   };
+
+  componentDidMount() {
+    this.timerID = setInterval(() => {
+      console.log('countDown:', this.state.countDown);
+      if (this.state.countDown > 0) {
+        this.setState({ countDown: this.state.countDown - 1 });
+      }
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
   showModal = () => {
     this.setState({ modalVisible: true });
   };
@@ -61,12 +85,21 @@ export default class UrgencyStart extends React.Component {
               label="账号授权码"
               name="userCode"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: 'Please input your username!' },
               ]}
               validateStatus="validating"
-              help="请输入正确的授权码！"
+              help={this.state.authCodeHelpMsg}
             >
-              <Input placeholder="授权码" />
+              <Input
+                value={this.state.authCode}
+                onChange={(e) => {
+                  this.setState({
+                    authCode: e.target.value,
+                    authCodeHelpMsg: '',
+                  });
+                }}
+                placeholder="授权码"
+              />
             </Form.Item>
           </div>
           <div className="author-applyFor">
@@ -78,10 +111,16 @@ export default class UrgencyStart extends React.Component {
               label="申请人"
               name="userApply"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input placeholder="申请人姓名" />
+              <Input
+                value={this.state.applicant}
+                onChange={(e) => {
+                  this.setState({ applicant: e.target.value });
+                }}
+                placeholder="申请人姓名"
+              />
             </Form.Item>
           </div>
           <div className="author-userTel">
@@ -89,35 +128,107 @@ export default class UrgencyStart extends React.Component {
               label="手机号"
               name="userTel"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input placeholder="手机号" />
+              <Input
+                value={this.state.phoneNo}
+                onChange={(e) => {
+                  this.setState({ phoneNo: e.target.value });
+                }}
+                placeholder="手机号"
+              />
             </Form.Item>
           </div>
           <div className="author-verifyCode">
             <Form.Item
               label="验证码"
               validateStatus="validating"
-              help="授权码错误"
+              help={this.state.smsCodeHelpMsg}
               name="verifyCode"
               rules={[
-                { required: true, message: "Please input your username!" },
+                { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input placeholder="验证码" />
+              <Input
+                value={this.state.verificationCode}
+                onChange={(e) => {
+                  this.setState({
+                    verificationCode: e.target.value,
+                    smsCodeHelpMsg: '',
+                  });
+                }}
+                placeholder="验证码"
+              />
             </Form.Item>
           </div>
           <div className="author-getverifyCode">
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                获取验证码
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.setState({ codeLoading: true });
+                  http.get('/api/v1/emergency/sendSmsCode').then((res) => {
+                    this.setState({ codeLoading: false });
+                    if (res.success) {
+                      this.setState({ countDown: 60 });
+                    } else {
+                      message.error(res.message);
+                    }
+                  });
+                }}
+                loading={this.state.codeLoading}
+                disabled={this.state.countDown > 0}
+              >
+                {this.state.countDown > 0
+                  ? `${this.state.countDown}s`
+                  : `获取验证码`}
               </Button>
             </Form.Item>
           </div>
           <div className="author-submit">
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" onClick={this.showModal}>
+              <Button
+                disabled={
+                  !this.state.authCode ||
+                  !this.state.applicant ||
+                  !this.state.phoneNo ||
+                  !this.state.verificationCode
+                }
+                type="primary"
+                loading={this.state.submitLoading}
+                onClick={() => {
+                  const {
+                    authCode,
+                    applicant,
+                    phoneNo,
+                    verificationCode,
+                  } = this.state;
+
+                  this.setState({ submitLoading: true });
+                  http
+                    .post('/api/v1/emergency/apply', {
+                      authCode,
+                      applicant,
+                      phoneNo,
+                      verificationCode,
+                    })
+                    .then((res) => {
+                      this.setState({ submitLoading: false });
+                      if (res.success) {
+                        this.showModal();
+                      } else {
+                        if (res.code === '000004') {
+                          this.setState({ authCodeHelpMsg: res.message });
+                        } else if (res.code === '000005') {
+                          this.setState({ smsCodeHelpMsg: res.message });
+                        } else {
+                          message.error(res.message);
+                        }
+                      }
+                    });
+                }}
+              >
                 确定
               </Button>
               <Modal
@@ -126,12 +237,7 @@ export default class UrgencyStart extends React.Component {
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
                 footer={[
-                  <Button
-                    // key="submit"
-                    type="primary"
-                    // loading={loading}
-                    onClick={this.handleOk}
-                  >
+                  <Button type="primary" onClick={this.handleOk}>
                     我知道了
                   </Button>,
                 ]}

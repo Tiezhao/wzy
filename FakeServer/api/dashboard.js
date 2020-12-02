@@ -19,13 +19,13 @@ const createTable = (floor, i) => {
     v.reqTime = Date.now();
   });
 
-  stoveStatus = {};
+  table.stoveStatus = {};
   seed = helper.getRandomSeed();
-  stoveStatus.power = seed.a ? 0 : seed.b ? 1 : 2;
+  table.stoveStatus.power = seed.a ? 0 : seed.b ? 1 : 2;
   seed = helper.getRandomSeed();
-  stoveStatus.fan = seed.a ? 0 : seed.b ? 1 : 2;
+  table.stoveStatus.fan = seed.a ? 0 : seed.b ? 1 : 2;
   seed = helper.getRandomSeed();
-  stoveStatus.water = seed.a ? 0 : seed.b ? 1 : 2;
+  table.stoveStatus.water = seed.a ? 0 : seed.b ? 1 : 2;
 
   return table;
 };

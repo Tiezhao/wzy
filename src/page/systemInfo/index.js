@@ -1,9 +1,9 @@
-import React from "react";
-import { Tabs } from "antd";
-import "./style.less";
-import InfoCard from "./component/infoCard";
-import infoData from "./infoData";
-import http from "../../utils/http";
+import React from 'react';
+import { Tabs } from 'antd';
+import './style.less';
+import InfoCard from './component/infoCard';
+import infoData from './infoData';
+import http from '../../utils/http';
 
 const { TabPane } = Tabs;
 //又分不清什么时候用圆括号什么时候用大括号
@@ -11,9 +11,9 @@ const SystemInfoTabTitle = ({ title }) => {
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         padding: 32,
         fontSize: 24,
       }}
@@ -26,61 +26,59 @@ const SystemInfoTabTitle = ({ title }) => {
 export default class SystemInfo extends React.Component {
   state = {
     systemInfoList: [],
-    tabKey: "all",
+    tabKey: 'all',
   };
   componentDidMount() {
-    //  const xhr = new XMLHttpRequest();
-    //   xhr.onreadystatechange = function() {
-    //     if (xhr.readyState === 4) {
-    //       console.info("======", xhr.response);
-    //     }
-    //  };
-    //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
-    //   xhr.send();
-    // const arraystoveList = [];
-    http.get("/api/v1/notice/getAllNotice").then((dd) => {
-      // console.log(dd.data);
-      this.setState({ systemInfoList: dd.data });
+    http.get('/api/v1/notice/getAllNotice').then((result) => {
+      this.setState({ systemInfoList: result.data });
     });
   }
-  //不懂参数tabKey怎么获取到
-  onChangeTab = (tabKey) => {
-    this.setState({ tabKey: tabKey });
-  };
-  render() {
-    // const { tabKey } = this.state;
-    const { systemInfoList } = this.state;
-    // console.log(systemInfoList);
 
-    const arrayContentData = infoData.data.arrayContent;
-    const arrayReadData = infoData.data.arrayRead;
-    const arrayNoReadData = infoData.data.arrayNoRead;
+  markRead = (noticeID) => {
+    const { systemInfoList } = this.state;
+    systemInfoList.forEach((value) => {
+      if (value.ID === noticeID) {
+        value.isRead = true;
+      }
+    });
+
+    this.setState({
+      systemInfoList: [...systemInfoList],
+    });
+  };
+
+  render() {
+    const { systemInfoList } = this.state;
+
     return (
       <div className="systeminfo">
         <Tabs
+          style={{ height: '100%', padding: 24 }}
           defaultActiveKey="all"
           activeKey={this.state.tabKey}
-          onChange={this.onChangeTab}
+          onChange={(tabKey) => this.setState({ tabKey })}
         >
           <TabPane tab={<SystemInfoTabTitle title="全部" />} key="all">
             <div>
               {systemInfoList.map((item) => (
-                <InfoCard data={item} />
+                <InfoCard data={item} markRead={this.markRead} />
               ))}
             </div>
           </TabPane>
           <TabPane tab={<SystemInfoTabTitle title="未读" />} key="2">
             <div>
-              {systemInfoList.map((item) => (
-                <InfoCard data={item} />
-              ))}
+              {systemInfoList.map((item) =>
+                item.isRead ? null : (
+                  <InfoCard data={item} markRead={this.markRead} />
+                )
+              )}
             </div>
           </TabPane>
           <TabPane tab={<SystemInfoTabTitle title="已读" />} key="3">
             <div>
-              {systemInfoList.map((item) => (
-                <InfoCard data={item} />
-              ))}
+              {systemInfoList.map((item) =>
+                item.isRead ? <InfoCard data={item} /> : null
+              )}
             </div>
           </TabPane>
         </Tabs>
