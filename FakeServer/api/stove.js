@@ -14,15 +14,20 @@ for (let i = 0; i < size; i++) {
   const item = {};
   item.sn = i + 1;
   item.stoveNo = 2000 + i;
-  item.blueteethPin = `${A2Z[range(0, 26)]}${A2Z[range(0, 26)]}:${
-    A2Z[range(0, 26)]
+  item.blueteethPin = `${A2Z[range(0, 25)]}${A2Z[range(0, 25)]}:${
+    A2Z[range(0, 25)]
   }${A2Z[range(0, 26)]}:${range(10, 19)}`;
   item.terminalCode = `P${`${i}`.padStart(4, '0')}`;
   item.terminalName = `${i <= 8 ? 1 : i <= 15 ? 2 : 3}F-餐桌${
     i <= 8 ? i + 1 : i <= 15 ? i + 1 - 8 : i + 1 - 15
   }`;
-  item.issueTime = dayjs().startOf('d').valueOf();
-  item.expireTime = dayjs().add(range(1, 360), 'd').endOf('d').valueOf();
+  item.issueTime = dayjs()
+    .startOf('d')
+    .valueOf();
+  item.expireTime = dayjs()
+    .add(range(1, 360), 'd')
+    .endOf('d')
+    .valueOf();
   item.validDays = dayjs(item.expireTime).diff(item.issueTime, 'd');
   const seed = helper.getRandomSeed();
   item.status = seed.a ? 0 : seed.b ? 1 : 2;
