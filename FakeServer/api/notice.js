@@ -35,7 +35,9 @@ for (let i = 0; i < size; i++) {
     : seed.b
     ? contentTemplate[1]
     : contentTemplate[2];
-  item.createTime = dayjs().add(range(1, 10), 'd').valueOf();
+  item.createTime = dayjs()
+    .add(range(1, 10), 'd')
+    .valueOf();
   seed = helper.getRandomSeed();
   item.isRead = seed.half;
 
@@ -48,6 +50,20 @@ exports.default = (app) => {
     const data = helper.getResponseTeamplate();
 
     data.data = noticeList;
+
+    setTimeout(() => resp.end(JSON.stringify(data)), 500);
+  });
+  app.post('/api/v1/notice/markRead', (req, resp) => {
+    helper.charSet(resp);
+    const data = helper.getResponseTeamplate();
+
+    const seed = helper.getRandomSeed();
+    if (seed.half) {
+      data.message = '系统繁忙···';
+      data.success = false;
+    } else {
+      data.success = true;
+    }
 
     setTimeout(() => resp.end(JSON.stringify(data)), 500);
   });

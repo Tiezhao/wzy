@@ -49,8 +49,19 @@ const mapStateToProps = (state) => ({ ...state.dashboard });
 
 @connect(mapStateToProps)
 export default class TableCard extends React.Component {
+  state = {
+    loading: false,
+  };
+
   render() {
-    const { requestList, tableName, tableStatus } = this.props.data;
+    const {
+      requestList,
+      tableName,
+      tableStatus,
+      stoveStatus,
+    } = this.props.data;
+
+    console.log('kkkk', this.props);
 
     const handleRequest = (e) => {
       // 获取参数
@@ -58,9 +69,9 @@ export default class TableCard extends React.Component {
       const { tableID, floorID } = this.props.data;
       const params = { tableID, floorID };
 
-      console.info('参数：', params);
+      this.setState({ loading: true });
       http.post('/api/v1/dashboard/handleRequest', params).then((result) => {
-        console.info('请求结果：', result);
+        this.setState({ loading: false });
 
         if (result.success) {
           message.success('请求已处理');
@@ -119,18 +130,20 @@ export default class TableCard extends React.Component {
           </div>
           <div className="t-status">
             <div className="t-status-list">
-              <img className="t-status-icon" src={icons.stove[status.stove]} />
-              <img className="t-status-icon" src={icons.fan[status.fan]} />
               <img
                 className="t-status-icon"
-                src={icons.cooler[status.cooler]}
+                src={icons.stove[stoveStatus.power]}
+              />
+              <img className="t-status-icon" src={icons.fan[stoveStatus.fan]} />
+              <img
+                className="t-status-icon"
+                src={icons.cooler[stoveStatus.water]}
               />
             </div>
             <Button
+              loading={this.state.loading}
               type="primary"
-              disabled={
-                getColorByStatus(tableStatus) === '#cecece' ? true : false
-              }
+              disabled={!requestList.length}
               onClick={handleRequest}
             >
               处理
