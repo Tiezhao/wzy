@@ -4,7 +4,7 @@ import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/_renderRoutes';
 
 
-let Router = DefaultRouter;
+let Router = require('dva/router').routerRedux.ConnectedRouter;
 
 let routes = [
   {
@@ -37,7 +37,7 @@ let routes = [
         "exact": true
       },
       {
-        "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+        "component": () => React.createElement(require('/Users/oyo/Documents/learning/z/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
       }
     ]
   },
@@ -47,7 +47,7 @@ let routes = [
     "exact": true
   },
   {
-    "component": () => React.createElement(require('C:/Users/Administrator/Documents/workspace/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
+    "component": () => React.createElement(require('/Users/oyo/Documents/learning/z/wzy/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/page', hasRoutesInConfig: true })
   }
 ];
 window.g_routes = routes;
