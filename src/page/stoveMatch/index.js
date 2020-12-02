@@ -1,120 +1,177 @@
-import React from "react";
-import { Button, Pagination } from "antd";
-import "./style.less";
-import { Table, Tag, Space } from "antd";
+import React from 'react';
+import dayjs from 'dayjs';
+import { Table, Button, Pagination } from 'antd';
+import stoveData from './stoveData';
+import http from '../../utils/http';
 
-import stoveData from "./stoveData";
-import tableData from "../dashboard/tableData";
-import http from "../../utils/http";
+import './style.less';
 
 const columns = [
   {
-    title: "蓝牙ping码",
-    dataIndex: "blueteethPin",
-    key: "blueteethPin",
+    title: '序号',
+    dataIndex: 'sn',
+    key: 'sn',
   },
   {
-    title: "到期时间",
-    dataIndex: "expireTime",
-    key: "expireTime",
+    title: '蓝牙ping码',
+    dataIndex: 'blueteethPin',
+    key: 'blueteethPin',
   },
   {
-    title: "启用时间",
-    dataIndex: "issueTime",
-    key: "issueTime",
+    title: '到期时间',
+    dataIndex: 'expireTime',
+    key: 'expireTime',
+    render: (expireTime) => dayjs(expireTime).format('YYYY-MM-DD HH:mm:ss'),
   },
   {
-    title: "订单号",
-    dataIndex: "orderNo",
-    key: "orderNo",
+    title: '启用时间',
+    dataIndex: 'issueTime',
+    key: 'issueTime',
+    render: (issueTime) => dayjs(issueTime).format('YYYY-MM-DD HH:mm:ss'),
   },
   {
-    title: "序号",
-    dataIndex: "sn",
-    key: "sn",
+    title: '订单号',
+    dataIndex: 'orderNo',
+    key: 'orderNo',
   },
   {
-    title: "状态",
-    dataIndex: "status",
-    key: "status",
+    title: '状态',
+    dataIndex: 'status',
+    key: 'status',
   },
   {
-    title: "灶台编号",
-    dataIndex: "stoveNo",
-    key: "stoveNo",
+    title: '灶台编号',
+    dataIndex: 'stoveNo',
+    key: 'stoveNo',
   },
   {
-    title: "终端编号",
-    dataIndex: "terminalCode",
-    key: "terminalCode",
+    title: '终端编号',
+    dataIndex: 'terminalCode',
+    key: 'terminalCode',
   },
   {
-    title: "终端名称",
-    dataIndex: "terminalName",
-    key: "terminalName",
+    title: '终端名称',
+    dataIndex: 'terminalName',
+    key: 'terminalName',
   },
   {
-    title: "剩余时间/天",
-    dataIndex: "validDays",
-    key: "validDays",
+    title: '剩余时间/天',
+    dataIndex: 'validDays',
+    key: 'validDays',
   },
 ];
 
 export default class StoveMatch extends React.Component {
   state = {
-    stoveList: [],
-    tableNum: 50,
-    nowPage: 1,
-    totalPages: 5,
+    list: [],
+    total: 0,
+
+    pagination: { page: 1, pageSize: 10 },
   };
   componentDidMount() {
-    //  const xhr = new XMLHttpRequest();
-    //   xhr.onreadystatechange = function() {
-    //     if (xhr.readyState === 4) {
-    //       console.info("======", xhr.response);
-    //     }
-    //  };
-    //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
-    //   xhr.send();
-    const arraystoveList = [];
-    http.post("/api/v1/stove/getStoveMatchList").then((dd) => {
-      // console.log(dd.data.list);
-      for (let i = 0; i < 5; i++) {
-        arraystoveList.push(dd.data.list);
+    const { pagination } = this.state;
+    const param = { ...pagination };
+    http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
+      if (result.success) {
+        const { list, total } = result.data;
+        this.setState({ list, total });
+      } else {
       }
-      // let j = 0;
-      console.log(arraystoveList);
-      this.setState({ stoveList: arraystoveList });
     });
   }
   onChange = (page) => {
-    this.setState({ nowPage: page });
+    this.setState(
+      {
+        pagination: { ...this.state.pagination, page },
+      },
+      () => {
+        const { pagination } = this.state;
+        const param = { ...pagination };
+        http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
+          if (result.success) {
+            const { list, total } = result.data;
+            this.setState({ list, total });
+          } else {
+          }
+        });
+      }
+    );
   };
   render() {
-    const { stoveList, tableNum, nowPage, totalPages } = this.state;
-    // console.log(stoveList[0]);
-    const data = stoveData.data.list;
+    const {
+      list,
+      total,
+      pagination: { page, pageSize },
+    } = this.state;
+
+    console.log('aslkdfjas', this.state);
+
     return (
       <div className="stovematch">
         <div className="stovematch-header">
           <span style={{ marginLeft: 20 }}>总租用台数：</span>
-          <div className="stovematch-num">{tableNum}</div>
+          <div className="stovematch-num">{total}</div>
           <span>台</span>
         </div>
         <div className="stovematch-content">
-          <Table columns={columns} dataSource={stoveList[0]}>
-            <Pagination onChange={this.onChange} />
-            {/* {console.log(current)} */}
-          </Table>
+          <Table
+            pagination={{
+              total,
+              pageSize,
+              current: page,
+              onChange: this.onChange,
+            }}
+            columns={columns}
+            dataSource={list}
+          ></Table>
           <div className="content-pages">
             <span>共</span>
-            {totalPages}
+            {Math.ceil(total / pageSize)}
             <span>页记录，当前显示第</span>
-            {nowPage}
+            {page}
             <span>页</span>
           </div>
-          <Button className="conent-updata">刷新</Button>
-          <Button className="content-shouye">首页</Button>
+          <Button
+            className="conent-updata"
+            onClick={() => {
+              http
+                .post('/api/v1/stove/getStoveMatchList', {
+                  ...this.state.pagination,
+                })
+                .then((result) => {
+                  if (result.success) {
+                    const { list, total } = result.data;
+                    this.setState({ list, total });
+                  }
+                });
+            }}
+          >
+            刷新
+          </Button>
+          <Button
+            className="content-shouye"
+            onClick={() => {
+              this.setState(
+                {
+                  pagination: { ...this.state.pagination, page: 1 },
+                },
+                () => {
+                  http
+                    .post('/api/v1/stove/getStoveMatchList', {
+                      ...this.state.pagination,
+                    })
+                    .then((result) => {
+                      if (result.success) {
+                        const { list, total } = result.data;
+                        this.setState({ list, total });
+                      }
+                    });
+                }
+              );
+            }}
+          >
+            首页
+          </Button>
         </div>
       </div>
     );

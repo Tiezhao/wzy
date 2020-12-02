@@ -1,19 +1,21 @@
-import { Tabs } from "antd";
-import TableCard from "./component/TableCard";
+import { Tabs } from 'antd';
+import TableCard from './component/TableCard';
+import Footer from '../myFooter/index';
+import { connect } from 'dva';
 
-import "./style.less";
+import './style.less';
 
 const { TabPane } = Tabs;
 
-import tableData from "./tableData";
-import http from "../../utils/http";
+import tableData from './tableData';
+import http from '../../utils/http';
 
 const TabTitle = ({ title }) => (
   <div
     style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       padding: 32,
       fontSize: 24,
     }}
@@ -24,86 +26,72 @@ const TabTitle = ({ title }) => (
 //刷新本页面时设置的不切换的功能
 // sessionStorage.setItem();
 
+const mapStateToProps = (state) => {
+  const { dashboard } = state;
+  return { ...dashboard };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateTableList: (data) =>
+      dispatch({ type: `dashboard/updateTableList`, payload: data }),
+  };
+};
+
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 export default class Dashboard extends React.Component {
   state = {
-    tableList: [],
-    tabKey: "all",
+    tabKey: 'all',
   };
 
   componentDidMount() {
-    //  const xhr = new XMLHttpRequest();
-    //   xhr.onreadystatechange = function() {
-    //     if (xhr.readyState === 4) {
-    //       console.info("======", xhr.response);
-    //     }
-    //  };
-    //  xhr.open("get", "/api/v1/wyz/dashboard/tables.json");
-    //   xhr.send();
-    http.get("/api/v1/dashboard/getTables").then((dd) => {
-      // console.log(dd.data);
-      this.setState({ tableList: dd.data });
+    http.get('/api/v1/dashboard/getTables').then((result) => {
+      const floorObj = {
+        all: { floorID: 'all', floorName: '全部', tableList: [] },
+      };
+      if (result.success) {
+        result.data.forEach((value) => {
+          const { floorID, floorName } = value;
+
+          if (!floorObj[floorID]) {
+            floorObj[floorID] = { floorID, floorName, tableList: [value] };
+          } else {
+            floorObj[floorID].tableList.push(value);
+          }
+          floorObj.all.tableList.push(value);
+        });
+      }
+      this.props.updateTableList(floorObj);
     });
   }
 
-  onChangeTab = (tabKey) => this.setState({ tabKey });
-
   render() {
-    const data = tableData.data.list;
-    const { tableList } = this.state;
-    // console.log(tableList);
+    const { tableList } = this.props;
 
     return (
       <div className="dashboard-wrap">
         <Tabs
           defaultActiveKey="all"
           activeKey={this.state.tabKey}
-          onChange={this.onChangeTab}
+          onChange={(tabKey) => this.setState({ tabKey })}
         >
-          <TabPane
-            tab={<TabTitle title="全部" />}
-            key="all"
-            style={{ minHeight: "50vh" }}
-          >
-            <div className="table-content">
-              {tableList.map((item) => (
-                <TableCard data={item} />
-              ))}
-            </div>
-          </TabPane>
-          <TabPane
-            tab={<TabTitle title="一楼" />}
-            key="1"
-            style={{ minHeight: "50vh" }}
-          >
-            <div className="table-content">
-              {tableList.map((item) => (
-                <TableCard data={item} />
-              ))}
-            </div>
-          </TabPane>
-          <TabPane
-            tab={<TabTitle title="二楼" />}
-            key="2"
-            style={{ minHeight: "50vh" }}
-          >
-            <div className="table-content">
-              {tableList.map((item) => (
-                <TableCard data={item} />
-              ))}
-            </div>
-          </TabPane>
-          <TabPane
-            tab={<TabTitle title="三楼" />}
-            key="3"
-            style={{ minHeight: "50vh" }}
-          >
-            <div className="table-content">
-              {tableList.map((item) => (
-                <TableCard data={item} />
-              ))}
-            </div>
-          </TabPane>
+          {Object.keys(tableList).map((key) => (
+            <TabPane
+              tab={<TabTitle title={tableList[key].floorName} />}
+              key={tableList[key].floorID}
+              style={{ minHeight: '50vh' }}
+            >
+              <div className="table-content">
+                {tableList[key].tableList.map((table) => (
+                  <TableCard data={table} />
+                ))}
+              </div>
+            </TabPane>
+          ))}
         </Tabs>
+        <Footer />
       </div>
     );
   }

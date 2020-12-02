@@ -14,5 +14,8 @@
   "devDependencies": {
     "umi": "2.6.1",
     "umi-plugin-react": "1.6.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.9.6"
   }
 }

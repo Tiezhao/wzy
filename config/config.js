@@ -1,51 +1,43 @@
 export default {
   singular: true,
   disableCSSModules: true,
-  plugins: [["umi-plugin-react", { antd: true }]],
+  plugins: [['umi-plugin-react', { antd: true, dva: true }]],
   routes: [
     {
-      path: "/app",
-      component: "../layout",
+      path: '/app',
+      component: '../layout',
       routes: [
         {
-          path: "/app/dashboard",
-          component: "./dashboard",
+          path: '/app/dashboard',
+          component: './dashboard',
         },
         {
-          path: "/app/stovematch",
-          component: "./stovematch",
+          path: '/app/stovematch',
+          component: './stovematch',
         },
         {
-          path: "/app/systemInfo",
-          component: "./systemInfo",
+          path: '/app/systemInfo',
+          component: './systemInfo',
         },
         {
-          path: "/app/urgencystart",
-          component: "./urgencystart",
+          path: '/app/urgencystart',
+          component: './urgencystart',
         },
         {
-          path: "/app/e",
-          component: "./E",
+          path: '/app/infomaintain',
+          component: './infomaintain',
         },
       ],
     },
-    {
-      path: "/login",
-      component: "./Login",
-    },
-    {
-      path: "/helloworld",
-      component: "./HelloWorld",
-    },
 
-    // {
-    //   path: '/order',
-    //   component: '../orderSystem/App',
-    // },
+    {
+      path: '/helloworld',
+      component: './HelloWorld',
+    },
   ],
   proxy: {
-    "/api": {
-      target: "http://192.168.2.234:7890",
+    '/api': {
+      target: 'http://127.0.0.1:7890',
       changeOrigin: true,
       // pathRewrite: { "^/api": "" },
     },

@@ -13,20 +13,18 @@ const getInfoCardColor = (infoCardStatus) => infoCardColor[infoCardStatus];
 
 //再尝试自定义组件
 export default function InfoCard(props) {
-  // console.log(props.data.arrayContent);
-  const {
-    systemInfo,
-    contentTitle,
-    mainContent,
-    signContent,
-    backgroundColor,
-  } = props.data;
+  // console.log(props.data.C);
+  const { ID, content, isRead } = props.data;
+  // console.log(props.data);
 
+  let backgroundColor = "#3fb8f8";
   let index = false;
-  if (backgroundColor === "#3fb8f8") {
+  if (isRead === false) {
+    backgroundColor = "#3fb8f8";
     index = false;
   }
-  if (backgroundColor === "#cecece") {
+  if (isRead === true) {
+    backgroundColor = "#cecece";
     index = true;
   }
   return (
@@ -36,14 +34,14 @@ export default function InfoCard(props) {
           className="infocard-nav"
           style={{ backgroundColor: backgroundColor }}
         >
-          {systemInfo}
+          系统消息
         </div>
         <div className="infocard-content">
-          <h3>{contentTitle}</h3>
-          <h3>{mainContent}</h3>
+          <h3>{content[0]}</h3>
+          <h3>{content[1]}</h3>
         </div>
         <Button className="infocard-button" type="primary" disabled={index}>
-          {signContent}
+          标记已读
         </Button>
       </div>
     </div>
