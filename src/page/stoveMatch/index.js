@@ -63,6 +63,7 @@ const columns = [
 
 export default class StoveMatch extends React.Component {
   state = {
+    loading: false,
     list: [],
     total: 0,
 
@@ -71,7 +72,9 @@ export default class StoveMatch extends React.Component {
   componentDidMount() {
     const { pagination } = this.state;
     const param = { ...pagination };
+    this.setState({ loading: true });
     http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
+      this.setState({ loading: false });
       if (result.success) {
         const { list, total } = result.data;
         this.setState({ list, total });
@@ -87,7 +90,10 @@ export default class StoveMatch extends React.Component {
       () => {
         const { pagination } = this.state;
         const param = { ...pagination };
+        this.setState({ loading: true });
         http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
+          this.setState({ loading: false });
+
           if (result.success) {
             const { list, total } = result.data;
             this.setState({ list, total });
@@ -104,8 +110,6 @@ export default class StoveMatch extends React.Component {
       pagination: { page, pageSize },
     } = this.state;
 
-    console.log('aslkdfjas', this.state);
-
     return (
       <div className="stovematch">
         <div className="stovematch-header">
@@ -115,6 +119,7 @@ export default class StoveMatch extends React.Component {
         </div>
         <div className="stovematch-content">
           <Table
+            loading={this.state.loading}
             pagination={{
               total,
               pageSize,
@@ -134,11 +139,14 @@ export default class StoveMatch extends React.Component {
           <Button
             className="conent-updata"
             onClick={() => {
+              this.setState({ loading: true });
               http
                 .post('/api/v1/stove/getStoveMatchList', {
                   ...this.state.pagination,
                 })
                 .then((result) => {
+                  this.setState({ loading: false });
+
                   if (result.success) {
                     const { list, total } = result.data;
                     this.setState({ list, total });
@@ -156,11 +164,15 @@ export default class StoveMatch extends React.Component {
                   pagination: { ...this.state.pagination, page: 1 },
                 },
                 () => {
+                  this.setState({ loading: true });
+
                   http
                     .post('/api/v1/stove/getStoveMatchList', {
                       ...this.state.pagination,
                     })
                     .then((result) => {
+                      this.setState({ loading: false });
+
                       if (result.success) {
                         const { list, total } = result.data;
                         this.setState({ list, total });
