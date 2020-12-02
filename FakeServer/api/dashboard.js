@@ -4,19 +4,19 @@ const createTable = (floor, i) => {
   const table = {};
 
   table.floorID = `floor-${floor}`;
-  table.floorName = '1楼';
+  table.floorName = `${floor}楼`;
   table.tableID = Date.now() + Math.random() * 10000;
   table.tableName = `${floor}F-餐桌${i + 1}`;
   let seed = helper.getRandomSeed();
   table.tableStatus = seed.a ? 0 : seed.b ? 1 : 2;
   seed = helper.getRandomSeed();
-  table.requestList = [seed.a ? 0 : seed.b ? 1 : 2];
+  table.requestList = [seed.c ? 0 : seed.half ? 2 : 1];
   table.requestList.fill({});
   table.requestList.forEach((v) => {
     seed = helper.getRandomSeed();
     v.reqID = `t${i + 1}-req-${i + 1}`;
     v.reqContent = seed.a ? '加水' : seed.b ? '点菜' : '买单';
-    v.reqTime = Date.now() + Math.random() * 12345;
+    v.reqTime = Date.now();
   });
 
   stoveStatus = {};
