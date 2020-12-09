@@ -1,21 +1,21 @@
-import { Tabs } from 'antd';
-import TableCard from './component/TableCard';
-import Footer from '../myFooter/index';
-import { connect } from 'dva';
+import { Tabs } from "antd";
+import TableCard from "./component/TableCard";
+import Footer from "../myFooter/index";
+import { connect } from "dva";
 
-import './style.less';
+import "./style.less";
 
 const { TabPane } = Tabs;
 
-import tableData from './tableData';
-import http from '../../utils/http';
+import tableData from "./tableData";
+import http from "../../utils/http";
 
 const TabTitle = ({ title }) => (
   <div
     style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       padding: 32,
       fontSize: 24,
     }}
@@ -32,6 +32,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    dispatch,
     updateTableList: (data) =>
       dispatch({ type: `dashboard/updateTableList`, payload: data }),
   };
@@ -43,28 +44,17 @@ const mapDispatchToProps = (dispatch) => {
 )
 export default class Dashboard extends React.Component {
   state = {
-    tabKey: 'all',
+    tabKey: "all",
   };
 
   componentDidMount() {
-    http.get('/api/v1/dashboard/getTables').then((result) => {
-      const floorObj = {
-        all: { floorID: 'all', floorName: '全部', tableList: [] },
-      };
-      if (result.success) {
-        result.data.forEach((value) => {
-          const { floorID, floorName } = value;
-
-          if (!floorObj[floorID]) {
-            floorObj[floorID] = { floorID, floorName, tableList: [value] };
-          } else {
-            floorObj[floorID].tableList.push(value);
-          }
-          floorObj.all.tableList.push(value);
-        });
-      }
-      this.props.updateTableList(floorObj);
-    });
+    const action = {
+      type: "dashboard/getTableData",
+      data: {
+        name: "mike",
+      },
+    };
+    this.props.dispatch(action);
   }
 
   render() {
@@ -81,11 +71,11 @@ export default class Dashboard extends React.Component {
             <TabPane
               tab={<TabTitle title={tableList[key].floorName} />}
               key={tableList[key].floorID}
-              style={{ minHeight: '50vh' }}
+              style={{ minHeight: "50vh" }}
             >
               <div className="table-content">
                 {tableList[key].tableList.map((table) => (
-                  <TableCard data={table} />
+                  <TableCard data={table} /> //在外部给tablecard传data（props）
                 ))}
               </div>
             </TabPane>

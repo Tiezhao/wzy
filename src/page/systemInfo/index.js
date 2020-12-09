@@ -1,9 +1,9 @@
-import React from 'react';
-import { Tabs } from 'antd';
-import './style.less';
-import InfoCard from './component/infoCard';
-import infoData from './infoData';
-import http from '../../utils/http';
+import React from "react";
+import { Tabs } from "antd";
+import "./style.less";
+import InfoCard from "./component/infoCard";
+import infoData from "./infoData";
+import http from "../../utils/http";
 
 const { TabPane } = Tabs;
 //又分不清什么时候用圆括号什么时候用大括号
@@ -11,9 +11,9 @@ const SystemInfoTabTitle = ({ title }) => {
   return (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         padding: 32,
         fontSize: 24,
       }}
@@ -26,10 +26,10 @@ const SystemInfoTabTitle = ({ title }) => {
 export default class SystemInfo extends React.Component {
   state = {
     systemInfoList: [],
-    tabKey: 'all',
+    tabKey: "all",
   };
   componentDidMount() {
-    http.get('/api/v1/notice/getAllNotice').then((result) => {
+    http.get("/api/v1/notice/getAllNotice").then((result) => {
       this.setState({ systemInfoList: result.data });
     });
   }
@@ -53,7 +53,7 @@ export default class SystemInfo extends React.Component {
     return (
       <div className="systeminfo">
         <Tabs
-          style={{ height: '100%', padding: 24 }}
+          style={{ height: "100%", padding: 24 }}
           defaultActiveKey="all"
           activeKey={this.state.tabKey}
           onChange={(tabKey) => this.setState({ tabKey })}

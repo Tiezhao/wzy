@@ -1,88 +1,92 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import { Table, Button, Pagination } from 'antd';
-import stoveData from './stoveData';
-import http from '../../utils/http';
+import React from "react";
+import dayjs from "dayjs";
+import { Table, Button, Pagination } from "antd";
+import stoveData from "./stoveData";
+import http from "../../utils/http";
 
-import './style.less';
+import "./style.less";
 
 const columns = [
   {
-    title: '序号',
-    dataIndex: 'sn',
-    key: 'sn',
+    title: "序号",
+    dataIndex: "sn",
+    key: "sn",
   },
   {
-    title: '蓝牙ping码',
-    dataIndex: 'blueteethPin',
-    key: 'blueteethPin',
+    title: "蓝牙ping码",
+    dataIndex: "blueteethPin",
+    key: "blueteethPin",
   },
   {
-    title: '到期时间',
-    dataIndex: 'expireTime',
-    key: 'expireTime',
-    render: (expireTime) => dayjs(expireTime).format('YYYY-MM-DD HH:mm:ss'),
+    title: "到期时间",
+    dataIndex: "expireTime",
+    key: "expireTime",
+    render: (expireTime) => dayjs(expireTime).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
-    title: '启用时间',
-    dataIndex: 'issueTime',
-    key: 'issueTime',
-    render: (issueTime) => dayjs(issueTime).format('YYYY-MM-DD HH:mm:ss'),
+    title: "启用时间",
+    dataIndex: "issueTime",
+    key: "issueTime",
+    render: (issueTime) => dayjs(issueTime).format("YYYY-MM-DD HH:mm:ss"),
   },
   {
-    title: '订单号',
-    dataIndex: 'orderNo',
-    key: 'orderNo',
+    title: "订单号",
+    dataIndex: "orderNo",
+    key: "orderNo",
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
+    title: "状态",
+    dataIndex: "status",
+    key: "status",
   },
   {
-    title: '灶台编号',
-    dataIndex: 'stoveNo',
-    key: 'stoveNo',
+    title: "灶台编号",
+    dataIndex: "stoveNo",
+    key: "stoveNo",
   },
   {
-    title: '终端编号',
-    dataIndex: 'terminalCode',
-    key: 'terminalCode',
+    title: "终端编号",
+    dataIndex: "terminalCode",
+    key: "terminalCode",
   },
   {
-    title: '终端名称',
-    dataIndex: 'terminalName',
-    key: 'terminalName',
+    title: "终端名称",
+    dataIndex: "terminalName",
+    key: "terminalName",
   },
   {
-    title: '剩余时间/天',
-    dataIndex: 'validDays',
-    key: 'validDays',
+    title: "剩余时间/天",
+    dataIndex: "validDays",
+    key: "validDays",
   },
 ];
 
 export default class StoveMatch extends React.Component {
   state = {
-    loading: false,
-    list: [],
+    loading: false, //加载时的动画效果
+    list: [], //存放所有餐桌数据
     total: 0,
 
-    pagination: { page: 1, pageSize: 10 },
+    pagination: { page: 1, pageSize: 15 },
   };
   componentDidMount() {
     const { pagination } = this.state;
     const param = { ...pagination };
     this.setState({ loading: true });
-    http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
+    http.post("/api/v1/stove/getStoveMatchList", param).then((result) => {
+      // console.log(result);
       this.setState({ loading: false });
       if (result.success) {
+        // list的长度即为pageSize
         const { list, total } = result.data;
         this.setState({ list, total });
       } else {
       }
     });
   }
-  onChange = (page) => {
+  //columns为标签数
+  onChange = (page, columns) => {
+    // console.log(page);
     this.setState(
       {
         pagination: { ...this.state.pagination, page },
@@ -91,11 +95,12 @@ export default class StoveMatch extends React.Component {
         const { pagination } = this.state;
         const param = { ...pagination };
         this.setState({ loading: true });
-        http.post('/api/v1/stove/getStoveMatchList', param).then((result) => {
-          this.setState({ loading: false });
-
+        http.post("/api/v1/stove/getStoveMatchList").then((result) => {
+          this.setState({ loading: false }); //加载完后重新变成false你
+          // console.log(result);
           if (result.success) {
             const { list, total } = result.data;
+            // console.log(total);
             this.setState({ list, total });
           } else {
           }
@@ -124,11 +129,12 @@ export default class StoveMatch extends React.Component {
               total,
               pageSize,
               current: page,
+              // 选中项发生变化时的回调
               onChange: this.onChange,
             }}
             columns={columns}
             dataSource={list}
-          ></Table>
+          />
           <div className="content-pages">
             <span>共</span>
             {Math.ceil(total / pageSize)}
@@ -141,7 +147,7 @@ export default class StoveMatch extends React.Component {
             onClick={() => {
               this.setState({ loading: true });
               http
-                .post('/api/v1/stove/getStoveMatchList', {
+                .post("/api/v1/stove/getStoveMatchList", {
                   ...this.state.pagination,
                 })
                 .then((result) => {
@@ -167,7 +173,7 @@ export default class StoveMatch extends React.Component {
                   this.setState({ loading: true });
 
                   http
-                    .post('/api/v1/stove/getStoveMatchList', {
+                    .post("/api/v1/stove/getStoveMatchList", {
                       ...this.state.pagination,
                     })
                     .then((result) => {
